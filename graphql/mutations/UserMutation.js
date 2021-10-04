@@ -7,6 +7,13 @@ const {
     GraphQLNonNull
 } = require('graphql')
 
+function GenerateToken(username) {
+    return jwt.sign({
+        exp: Math.floor(Date.now() / 1000) + (60 * 60),
+        username: username
+    }, process.env.PRIVATE_KEY)
+}
+
 const AuthType = new GraphQLObjectType({
     name: 'Auth',
     fields: {
@@ -23,18 +30,29 @@ const login = {
     resolve: async (parent, args) => {
         const user = await User.findOne({ username: args.username })
         if (await bcrypt.compare(args.password, user.password)) {
-            const token = jwt.sign({
-                exp: Math.floor(Date.now() / 1000) + (60 * 60),
-                username: user.username
-            }, process.env.PRIVATE_KEY)
-
-            return { token: token }
+            return { token: GenerateToken(user.username) }
         }
     }
 }
 
 const register = {
     type: AuthType,
+    args: {
+        username: { type: GraphQLNonNull(GraphQLString) },
+        password: { type: GraphQLNonNull(GraphQLString) }
+    },
+    resolve: async (parent, args) => {
+        if (await User.findOne({ username: args.username }))
+            throw Error("This username already exists")
+        else {
+            const user = new User({
+                username: args.username,
+                password: await bcrypt.hash(args.password, await bcrypt.genSalt(10))
+            })
+            await user.save()
+            return { token: GenerateToken(user.username) }
+        }
+    }
 }
 
 module.exports = {
