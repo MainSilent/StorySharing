@@ -29,6 +29,8 @@ const login = {
     },
     resolve: async (parent, args) => {
         const user = await User.findOne({ username: args.username })
+        if (!user) return null
+
         if (await bcrypt.compare(args.password, user.password)) {
             return { token: GenerateToken(user.username) }
         }
