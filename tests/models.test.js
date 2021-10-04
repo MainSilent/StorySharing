@@ -7,7 +7,7 @@ const CategoryModel = require('../Models/Category')
 
 const UserSample = {
     username: "Simon",
-    password: "$2b$10$YDxRWoo.yzqi.YzLAkAcqueoCWQ2Vckil0K7NAr/0sB9CEyjhMLse"
+    password: "s%3g^h1ed"
 }
 
 const CategorySample = {
