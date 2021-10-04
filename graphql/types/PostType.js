@@ -1,3 +1,5 @@
+const User = require('../../Models/User')
+
 const {
     GraphQLObjectType,
     GraphQLString,
@@ -12,7 +14,11 @@ const PostType = new GraphQLObjectType({
         title: { type: GraphQLString },
         slug: { type: GraphQLString },
         content: { type: GraphQLString },
-        dateCreated: { type: GraphQLString }
+        dateCreated: { type: GraphQLString },
+        user: {
+            type: require('./UserType'),
+            resolve: post => User.findOne({ id: post.userId })
+        }
     })
 })
 
