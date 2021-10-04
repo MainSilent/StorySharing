@@ -3,7 +3,8 @@ const express = require('express')
 const mongoose = require('mongoose')
 const { graphqlHTTP } = require('express-graphql')
 const { GraphQLSchema } = require('graphql')
-const query = require('./graphql/query')
+const Query = require('./graphql/query')
+const Mutation = require('./graphql/mutation')
 
 mongoose.connect(process.env.DB_CONNECTION)
     .then(() => console.log('Connected to database'))
@@ -12,7 +13,8 @@ mongoose.connect(process.env.DB_CONNECTION)
 const app = express()
 
 const schema = new GraphQLSchema({
-    query: query
+    query: Query,
+    mutation: Mutation
 })
 
 app.use('/graphql', graphqlHTTP({
