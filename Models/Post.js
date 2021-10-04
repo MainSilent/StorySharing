@@ -1,6 +1,10 @@
 const { Schema, model } = require('mongoose')
 
 const PostSchema = Schema({
+    userId: {
+        type: String,
+        required: true
+    },
     title: {
         type: String,
         required: true
@@ -16,10 +20,6 @@ const PostSchema = Schema({
     dateCreated: {
         type: Date,
         default: Date.now()
-    },
-    userId: {
-        type: String,
-        required: true
     }
 })
 
