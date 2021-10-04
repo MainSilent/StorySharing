@@ -5,10 +5,9 @@ const { graphqlHTTP } = require('express-graphql')
 const { GraphQLSchema } = require('graphql')
 const query = require('./graphql/query')
 
-mongoose.connect(process.env.DB_CONNECTION, err => {
-    if (err) throw err
-    console.log('Connected to database')
-})
+mongoose.connect(process.env.DB_CONNECTION)
+    .then(() => console.log('Connected to database'))
+    .catch(err => console.error(err))
 
 const app = express()
 
