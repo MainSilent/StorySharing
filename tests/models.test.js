@@ -17,7 +17,8 @@ const CategorySample = {
 const PostSample = {
     title: "How to test",
     slug: "how_to_test",
-    content: "This is a test"
+    content: "This is a test",
+    userId: "1"
 }
 
 beforeAll(async () => {
