@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken')
 const Post = require('../../Models/Post')
 const PostType = require('../types/PostType')
 const {
@@ -11,14 +12,14 @@ const addPost = {
     type: PostType,
     args: {
         title: { type: GraphQLNonNull(GraphQLString) },
-        slug: { type: GraphQLNonNull(GraphQLString) },
         content: { type: GraphQLNonNull(GraphQLString) },
         categories: { type: GraphQLNonNull(GraphQLList(GraphQLString)) }
     },
     resolve: async (parent, args) => {
-        args.userId = 333
-        const post = await new Post(args).save()
-        return post
+        args.userId = 0
+        args.slug = 0
+        // const post = await new Post(args).save()
+        // return post
     }
 }
 
