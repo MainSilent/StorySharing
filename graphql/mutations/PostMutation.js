@@ -15,11 +15,12 @@ const addPost = {
         content: { type: GraphQLNonNull(GraphQLString) },
         categories: { type: GraphQLNonNull(GraphQLList(GraphQLString)) }
     },
-    resolve: async (parent, args) => {
-        args.userId = 0
-        args.slug = 0
-        // const post = await new Post(args).save()
-        // return post
+    resolve: async (parent, args, ctx) => {
+        args.userId = ctx.headers.userId
+        args.title = args.title.trim().replace(/ +/g, ' ')
+        args.slug = args.title.toLowerCase().trim().replace(/[^\w ]+/g, '').replace(/ +/g, '-')
+        const post = await new Post(args).save()
+        return post
     }
 }
 
