@@ -24,4 +24,25 @@ const AuthMiddleware = (req, res, next) => {
     }
 }
 
-module.exports = AuthMiddleware
+const AuthRestMiddleware = (req, res, next) => {
+    try {
+        if (req.url === "/api/user/image") {
+            try {
+                var token = jwt.verify(req.headers.authorization, process.env.PRIVATE_KEY)
+                req.headers.userId = token.userId
+            } catch(e) {
+                return res.status(401).send()
+            }
+        }
+        next()
+    }
+    catch(e) {
+        console.log(e)
+        return res.status(500).send()
+    }
+}
+
+module.exports = { 
+    AuthMiddleware: AuthMiddleware,
+    AuthRestMiddleware: AuthRestMiddleware
+}
