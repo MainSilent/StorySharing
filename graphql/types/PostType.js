@@ -3,6 +3,7 @@ const User = require('../../Models/User')
 const {
     GraphQLObjectType,
     GraphQLString,
+    GraphQLList,
     GraphQLID
 } = require('graphql')
 
@@ -14,6 +15,7 @@ const PostType = new GraphQLObjectType({
         title: { type: GraphQLString },
         slug: { type: GraphQLString },
         content: { type: GraphQLString },
+        categories: { type: GraphQLList(GraphQLString) },
         dateCreated: { type: GraphQLString },
         user: {
             type: require('./UserType'),
