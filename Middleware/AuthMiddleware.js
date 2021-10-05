@@ -26,7 +26,7 @@ const AuthMiddleware = (req, res, next) => {
 
 const AuthRestMiddleware = (req, res, next) => {
     try {
-        if (req.url === "/api/user/image") {
+        if (req.url === "/api/user/image" || req.url === "/api/post/thumbnail") {
             try {
                 var token = jwt.verify(req.headers.authorization, process.env.PRIVATE_KEY)
                 req.headers.userId = token.userId

@@ -6,6 +6,7 @@ const { GraphQLSchema } = require('graphql')
 const Query = require('./graphql/query')
 const Mutation = require('./graphql/mutation')
 const UserRouter = require('./Routes/UserRouter')
+const PostRouter = require('./Routes/PostRouter')
 const { AuthMiddleware, AuthRestMiddleware } = require('./Middleware/AuthMiddleware')
 
 mongoose.connect(process.env.DB_CONNECTION)
@@ -16,7 +17,7 @@ const app = express()
 app.use(express.json())
 app.use('/graphql', AuthMiddleware)
 app.use(AuthRestMiddleware)
-app.use('/api', UserRouter)
+app.use('/api', UserRouter, PostRouter)
 
 const schema = new GraphQLSchema({
     query: Query,

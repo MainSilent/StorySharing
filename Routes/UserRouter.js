@@ -8,9 +8,9 @@ router.post('/user/image', async (req, res) => {
         return res.status(405).send()
 
     const user = await User.findById(req.headers.userId).select('username')
-    const path = './public/static/images/user'
+    const path = './public/static/images/users'
     fs.mkdir(path, _ => {
-        req.pipe(fs.createWriteStream(`${path}/${user.username}.png`))
+        req.pipe(fs.createWriteStream(`${path}/${user.id}.png`))
         res.send()
     })
 })
