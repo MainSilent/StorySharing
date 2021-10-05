@@ -6,7 +6,7 @@ const AuthMiddleware = (req, res, next) => {
         const query = parse(req.body.query)
         if (query.definitions[0].operation == 'mutation') {
             const queryName = query.definitions[0].selectionSet.selections[0].name.value
-            if (queryName === "addPost" || queryName === "deletePost") {
+            if (queryName === "addPost" || queryName === "deletePost" || queryName === "updatePost") {
                 try {
                     var token = jwt.verify(req.headers.authorization, process.env.PRIVATE_KEY)
                     req.headers.userId = token.userId

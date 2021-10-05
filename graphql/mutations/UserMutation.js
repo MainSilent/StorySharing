@@ -9,7 +9,7 @@ const {
 
 function GenerateToken(userId) {
     return jwt.sign({
-        exp: Math.floor(Date.now() / 1000) + (60 * 60),
+        exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24),
         userId: userId
     }, process.env.PRIVATE_KEY)
 }
