@@ -7,10 +7,10 @@ const {
     GraphQLNonNull
 } = require('graphql')
 
-function GenerateToken(username) {
+function GenerateToken(userId) {
     return jwt.sign({
         exp: Math.floor(Date.now() / 1000) + (60 * 60),
-        username: username
+        userId: userId
     }, process.env.PRIVATE_KEY)
 }
 
@@ -32,7 +32,7 @@ const login = {
         if (!user) return null
 
         if (await bcrypt.compare(args.password, user.password)) {
-            return { token: GenerateToken(user.username) }
+            return { token: GenerateToken(user.id) }
         }
     }
 }
@@ -46,13 +46,15 @@ const register = {
     resolve: async (parent, args) => {
         if (await User.findOne({ username: args.username }))
             throw Error("This username already exists")
+        else if (!/^[a-zA-Z0-9]+$/.test(args.username))
+            throw Error("Only Alphanumeric characters are allowed in username")
         else {
             const user = new User({
                 username: args.username,
                 password: await bcrypt.hash(args.password, await bcrypt.genSalt(10))
             })
             await user.save()
-            return { token: GenerateToken(user.username) }
+            return { token: GenerateToken(user.id) }
         }
     }
 }
