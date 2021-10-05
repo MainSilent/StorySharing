@@ -29,9 +29,9 @@ const deletePost = {
     args: {
         id: { type: GraphQLNonNull(GraphQLID) },
     },
-    resolve: async (parent, args) => {
+    resolve: async (parent, args, ctx) => {
         const post = await Post.findById(args.id)
-        if (!post)
+        if (!post || post.userId !== ctx.headers.userId)
             throw Error("Post is not available")
         else
             post.delete()
